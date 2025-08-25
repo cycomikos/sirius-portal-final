@@ -1,0 +1,137 @@
+/* Logo Component Styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-stack {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sirius-logo-img,
+.petronas-logo-img {
+  display: block;
+  height: auto;
+  object-fit: contain;
+  transition: all var(--transition-fast);
+}
+
+.logo-divider {
+  width: 1px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 0.25rem;
+}
+
+/* Size Variants */
+.logo-small .sirius-logo-img {
+  height: 24px;
+  max-width: 80px;
+}
+
+.logo-small .petronas-logo-img {
+  height: 20px;
+  max-width: 20px;
+}
+
+.logo-small .logo-divider {
+  height: 20px;
+}
+
+.logo-medium .sirius-logo-img {
+  height: 32px;
+  max-width: 120px;
+}
+
+.logo-medium .petronas-logo-img {
+  height: 28px;
+  max-width: 28px;
+}
+
+.logo-medium .logo-divider {
+  height: 28px;
+}
+
+.logo-large .sirius-logo-img {
+  height: 48px;
+  max-width: 180px;
+}
+
+.logo-large .petronas-logo-img {
+  height: 42px;
+  max-width: 42px;
+}
+
+.logo-large .logo-divider {
+  height: 42px;
+}
+
+/* Single Logo Variants */
+.logo-container:not(.logo-full) .sirius-logo-img {
+  height: 40px;
+  max-width: 160px;
+}
+
+.logo-container:not(.logo-full) .petronas-logo-img {
+  height: 40px;
+  max-width: 40px;
+}
+
+/* Hover Effects */
+.logo-container:hover .sirius-logo-img,
+.logo-container:hover .petronas-logo-img {
+  transform: scale(1.05);
+}
+
+.logo-container:hover .logo-divider {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .logo-stack {
+    gap: 0.25rem;
+  }
+  
+  .logo-medium .sirius-logo-img {
+    height: 28px;
+    max-width: 100px;
+  }
+  
+  .logo-medium .petronas-logo-img {
+    height: 24px;
+    max-width: 24px;
+  }
+  
+  .logo-medium .logo-divider {
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-small .sirius-logo-img {
+    height: 20px;
+    max-width: 70px;
+  }
+  
+  .logo-small .petronas-logo-img {
+    height: 18px;
+    max-width: 18px;
+  }
+  
+  .logo-small .logo-divider {
+    height: 18px;
+  }
+}
+
+/* Dark Theme Adjustments */
+[data-theme="light"] .logo-divider {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .logo-container:hover .logo-divider {
+  background: rgba(0, 0, 0, 0.4);
+}

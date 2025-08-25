@@ -1,0 +1,58 @@
+.promotions-section {
+  padding: 8rem 0;
+  background: var(--bg-primary);
+}
+
+.promotions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.promotion-card {
+  position: relative;
+}
+
+.promotion-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--petronas-orange), var(--petronas-orange-dark));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+}
+
+.promotion-card h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.promotion-card p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.feature-list {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.feature-list li {
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.feature-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--petronas-green);
+  font-weight: bold;
+}

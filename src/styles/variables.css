@@ -1,0 +1,48 @@
+:root {
+  /* PETRONAS Corporate Theme Colors */
+  --petronas-green: #00B140;
+  --petronas-green-dark: #009933;
+  --petronas-green-light: #33C466;
+  --petronas-blue: #0066CC;
+  --petronas-blue-dark: #004C99;
+  --petronas-blue-light: #3385D6;
+  --petronas-orange: #FF6600;
+  --petronas-orange-dark: #E55A00;
+  --petronas-orange-light: #FF8533;
+  --petronas-red: #DC143C;
+  --petronas-yellow: #FFD700;
+  --petronas-gray: #666666;
+  --petronas-gray-light: #F5F5F5;
+  --petronas-gray-dark: #333333;
+  
+  /* Dark mode variables */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #888888;
+  --border-color: rgba(255,255,255,0.1);
+  --shadow-light: rgba(0,0,0,0.1);
+  --shadow-medium: rgba(0,0,0,0.2);
+  --shadow-heavy: rgba(0,0,0,0.3);
+  
+  /* Animation variables */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* Light mode variables */
+[data-theme="light"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-tertiary: #E9ECEF;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-tertiary: #6C757D;
+  --border-color: rgba(0,0,0,0.1);
+  --shadow-light: rgba(0,0,0,0.05);
+  --shadow-medium: rgba(0,0,0,0.1);
+  --shadow-heavy: rgba(0,0,0,0.15);
+}
