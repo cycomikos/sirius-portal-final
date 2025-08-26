@@ -6,7 +6,14 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // Fix React plugin preamble detection issues
+      include: "**/*.{jsx,tsx}",
+      babel: {
+        plugins: [],
+        presets: []
+      }
+    }),
     viteStaticCopy({
       targets: [
         {
@@ -18,24 +25,31 @@ export default defineConfig({
   ],
   server: {
     headers: {
-      // Content Security Policy - Development Environment
+      // Development CSP - More permissive for Vite dev server
       'Content-Security-Policy': [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "img-src 'self' data: https: blob: https://images.unsplash.com",
+        // Allow unsafe-inline for development (Vite needs this)
+        "script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'",
+        // Style sources - allow unsafe-inline for development
+        "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'",
+        // Image sources - allow all for development flexibility
+        "img-src 'self' data: https: http:",
+        // Font sources
         "font-src 'self' data: https://fonts.gstatic.com",
-        "connect-src 'self' ws://localhost:* wss://localhost:*",
+        // Connection sources for development (WebSocket, HMR)
+        "connect-src 'self' ws://localhost:* wss://localhost:* https://cdnjs.cloudflare.com https://images.unsplash.com",
+        // Media sources
         "media-src 'self'",
+        // Disable objects
         "object-src 'none'",
+        // Base URI restrictions
         "base-uri 'self'",
+        // Form action restrictions
         "form-action 'self'",
-        "frame-ancestors 'none'",
-        "frame-src 'none'",
-        "child-src 'none'",
+        // Worker sources
         "worker-src 'self' blob:",
-        "manifest-src 'self'",
-        "upgrade-insecure-requests"
+        // Manifest sources
+        "manifest-src 'self'"
       ].join('; '),
       
       // Security Headers
@@ -75,24 +89,15 @@ export default defineConfig({
         },
         // Remove comments and debug info
         compact: true,
-        // Optimize chunk splitting for better security isolation
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
-            }
-            if (id.includes('@esri')) {
-              return 'esri-vendor';
-            }
-            return 'vendor';
-          }
+        // Simplified chunk splitting to avoid initialization issues
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'esri-vendor': ['@esri/calcite-components-react']
         }
       },
-      // Security optimizations
+      // Simplified treeshaking to avoid initialization issues
       treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false,
-        unknownGlobalSideEffects: false
+        moduleSideEffects: true
       }
     },
     // Additional terser options for security

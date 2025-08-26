@@ -25,12 +25,6 @@ export interface StatItem {
   label: string;
 }
 
-export interface FeatureItem {
-  icon: string;
-  title: string;
-  description: string;
-}
-
 export interface AnnouncementItem {
   badge: string;
   title: string;

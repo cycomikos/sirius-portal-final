@@ -13,26 +13,51 @@ export function isSecureContext(): boolean {
 }
 
 /**
- * Checks if CSP is enabled by attempting to detect CSP violations
+ * Checks if CSP is enabled by multiple methods
  */
 export function checkCSPEnabled(): boolean {
   if (typeof document === 'undefined') return false;
   
-  try {
-    // Try to create an inline script - CSP should block this
-    const script = document.createElement('script');
-    script.innerHTML = 'window.__csp_test__ = true;';
-    document.head.appendChild(script);
-    document.head.removeChild(script);
-    
-    // If CSP is working, the variable should not be set
-    const cspWorking = !(window as any).__csp_test__;
-    delete (window as any).__csp_test__;
-    
-    return cspWorking;
-  } catch (error) {
-    return true; // Assume CSP is working if there's an error
+  // Method 1: Check for CSP headers or meta tags
+  const cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
+  if (cspMeta) {
+    return true;
   }
+  
+  // Method 2: Check if CSP violation events are supported (indicates CSP is likely active)
+  if ('SecurityPolicyViolationEvent' in window) {
+    // Method 3: Try to detect via inline script test
+    try {
+      // Create a test that should be blocked by CSP
+      const script = document.createElement('script');
+      script.textContent = 'window.__csp_test__ = true;';
+      
+      // Listen for CSP violation
+      let violationDetected = false;
+      const violationHandler = () => {
+        violationDetected = true;
+      };
+      
+      document.addEventListener('securitypolicyviolation', violationHandler, { once: true });
+      
+      document.head.appendChild(script);
+      document.head.removeChild(script);
+      
+      // Clean up
+      document.removeEventListener('securitypolicyviolation', violationHandler);
+      
+      // If we detected a violation OR the variable wasn't set, CSP is working
+      const cspWorking = violationDetected || !(window as any).__csp_test__;
+      delete (window as any).__csp_test__;
+      
+      return cspWorking;
+    } catch (error) {
+      return true; // Assume CSP is working if there's an error
+    }
+  }
+  
+  // Fallback: assume CSP is not active if we can't detect it
+  return false;
 }
 
 /**
@@ -167,9 +192,9 @@ export function performSecurityChecks(): {
     warnings.push('Application is not running over HTTPS in production');
   }
   
-  // Check CSP
+  // Check CSP (only warn in production)
   const cspEnabled = checkCSPEnabled();
-  if (!cspEnabled) {
+  if (!cspEnabled && process.env.NODE_ENV === 'production') {
     warnings.push('Content Security Policy does not appear to be active');
   }
   

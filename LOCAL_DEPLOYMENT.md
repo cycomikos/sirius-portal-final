@@ -8,6 +8,24 @@ This guide walks you through deploying the Sirius Portal React application local
 - Homebrew installed
 - macOS terminal access
 
+## Quick Start (For Next Time)
+
+### Option 1: Vite Preview (Recommended)
+```bash
+npm run build
+npm run preview
+```
+Access at: **http://localhost:4173** (or next available port)
+
+### Option 2: nginx Server
+```bash
+npm run build
+nginx -c /Volumes/MyProjects/Petronas/Sirius/sirius-portal-final/nginx-local.conf
+```
+Access at: **http://localhost:8081**
+
+To stop nginx: `nginx -s stop`
+
 ## Step-by-Step Deployment
 
 ### 1. Install nginx
@@ -93,9 +111,9 @@ This typically runs on port 5173 with hot reload.
 ### Production Mode (nginx)
 For testing the production build locally:
 ```bash
-sudo nginx -c /Volumes/MyProjects/Petronas/Sirius/sirius-portal-final/nginx-local.conf
+nginx -c /Volumes/MyProjects/Petronas/Sirius/sirius-portal-final/nginx-local.conf
 ```
-This serves the built files from the `dist/` folder on port 3000.
+This serves the built files from the `dist/` folder on port 8081.
 
 ## Troubleshooting
 
