@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo, useCallback, memo } from 'react';
+import { useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { Section } from '../UI';
 import { createSecureScript, isAllowedDomain } from '../../utils/security';
