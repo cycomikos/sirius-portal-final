@@ -2,13 +2,22 @@ export interface NavClickHandler {
   (href: string): void;
 }
 
-export interface FormData {
+export interface FormData extends Record<string, string> {
   name: string;
   email: string;
   phone: string;
   department: string;
   subject: string;
   message: string;
+}
+
+export interface FormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  department?: string;
+  subject?: string;
+  message?: string;
 }
 
 export interface StatItem {

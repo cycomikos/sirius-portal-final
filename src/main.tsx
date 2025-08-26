@@ -3,6 +3,10 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "@esri/calcite-components/dist/calcite/calcite.css";
 import { setAssetPath } from "@esri/calcite-components/dist/components";
+import { initSecurityMonitoring } from "./utils/security";
+
+// Initialize security monitoring
+initSecurityMonitoring();
 
 setAssetPath(window.location.href);
 

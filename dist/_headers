@@ -1,0 +1,70 @@
+# Comprehensive Security Headers for Production Deployment
+# Compatible with Netlify, Vercel, and other static hosting providers
+
+# Global security headers for all routes
+/*
+  # Content Security Policy - Production Environment
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob: https://images.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; child-src 'none'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests; block-all-mixed-content; require-trusted-types-for 'script'
+  
+  # Security Headers
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-DNS-Prefetch-Control: off
+  X-Download-Options: noopen
+  X-Permitted-Cross-Domain-Policies: none
+  
+  # HTTPS Security
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  
+  # Feature Policy / Permissions Policy
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(self), display-capture=()
+  
+  # Cache Control for Security (Assets will have their own cache headers)
+  Cache-Control: public, max-age=0, must-revalidate
+  
+  # Additional Security Headers
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Specific headers for JavaScript files
+/assets/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/javascript; charset=utf-8
+
+# Specific headers for CSS files
+/assets/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: text/css; charset=utf-8
+
+# Specific headers for images
+/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+  Cross-Origin-Resource-Policy: cross-origin
+
+# Specific headers for fonts
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Cross-Origin-Resource-Policy: cross-origin
+  Access-Control-Allow-Origin: *
+
+# Service Worker (if added later)
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+  Service-Worker-Allowed: /
+
+# Manifest file
+/manifest.json
+  Cache-Control: public, max-age=3600
+  Content-Type: application/manifest+json
+
+# Favicon and icons
+/*.ico
+  Cache-Control: public, max-age=86400
+
+# API endpoints (future use)
+/api/*
+  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
+  Content-Security-Policy: default-src 'none'

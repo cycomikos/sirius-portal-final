@@ -83,8 +83,18 @@ export const translations = {
     // About
     aboutSubtitle: "SMARTER OPERATIONS WITH GEOSPATIAL INSIGHT",
     aboutTitle: "Sirius: PETRONAS' New GIS-Powered Platform",
-    aboutDescription: "Sirius is Petronas new GIS-powered platform, allowing easy visual of geological/geophysical and asset management data across our life-of-field operations.",
-    techStack: "Sirius is built on industry-leading technologies:",
+    aboutDescription: "Sirius represents PETRONAS' commitment to digital transformation, providing comprehensive geospatial intelligence that empowers decision-makers across our global operations with unprecedented visibility into geological, geophysical, and asset management data.",
+    aboutDescription2: "Built on enterprise-grade architecture, Sirius integrates industry-leading technologies to deliver mission-critical insights that drive operational excellence and strategic growth across our upstream portfolio.",
+    techStack: "Sirius leverages best-in-class enterprise platforms to deliver unparalleled geospatial intelligence and operational insights.",
+    executiveInsight: "Sirius has fundamentally transformed our approach to field development and asset optimization. The platform's integrated geospatial capabilities have enabled our teams to reduce decision-making cycles by 60% while improving operational accuracy across all our major projects.",
+    executiveName: "Dato' Mohammad Zainal",
+    executiveTitle: "Executive Vice President, Upstream",
+    technologyStackTitle: "Enterprise Technology Stack",
+    operationalMetricsTitle: "Operational Excellence Metrics",
+    wellsMonitored: "Wells Monitored",
+    efficiencyGain: "Efficiency Gain",
+    operations247: "Operations",
+    globalMarkets: "Global Markets",
     
     // Features
     featuresTitle: "Key Features",
@@ -186,8 +196,18 @@ export const translations = {
     // About
     aboutSubtitle: "OPERASI YANG LEBIH BIJAK DENGAN WAWASAN GEOSPATIAL",
     aboutTitle: "Sirius: Platform Berkuasa GIS Baharu PETRONAS",
-    aboutDescription: "Sirius ialah platform berkuasa GIS baharu Petronas, membolehkan visualisasi mudah data geologi/geofizik dan pengurusan aset merentasi operasi life-of-field kami.",
-    techStack: "Sirius dibina atas teknologi terdepan industri:",
+    aboutDescription: "Sirius mewakili komitmen PETRONAS terhadap transformasi digital, menyediakan kecerdasan geospatial yang komprehensif yang memperkasakan pembuat keputusan di seluruh operasi global kami dengan keterlihatan yang tidak pernah ada sebelum ini terhadap data geologi, geofizik, dan pengurusan aset.",
+    aboutDescription2: "Dibina atas seni bina gred perusahaan, Sirius menyepadukan teknologi terdepan industri untuk menyampaikan wawasan kritikal misi yang memacu kecemerlangan operasi dan pertumbuhan strategik merentasi portfolio huluan kami.",
+    techStack: "Sirius memanfaatkan platform perusahaan terbaik dalam kelasnya untuk menyampaikan kecerdasan geospatial dan wawasan operasi yang tiada tandingannya.",
+    executiveInsight: "Sirius telah mengubah secara fundamental pendekatan kami terhadap pembangunan medan dan pengoptimuman aset. Keupayaan geospatial bersepadu platform ini telah membolehkan pasukan kami mengurangkan kitaran membuat keputusan sebanyak 60% sambil meningkatkan ketepatan operasi merentasi semua projek utama kami.",
+    executiveName: "Dato' Mohammad Zainal",
+    executiveTitle: "Naib Presiden Eksekutif, Huluan",
+    technologyStackTitle: "Teknologi Perusahaan",
+    operationalMetricsTitle: "Metrik Kecemerlangan Operasi",
+    wellsMonitored: "Telaga Dipantau",
+    efficiencyGain: "Peningkatan Kecekapan",
+    operations247: "Operasi",
+    globalMarkets: "Pasaran Global",
     
     // Features
     featuresTitle: "Ciri-ciri Utama",

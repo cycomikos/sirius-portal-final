@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { Section } from '../UI';
 import './AboutSection.css';
@@ -26,10 +26,10 @@ export function AboutSection() {
   ];
 
   const performanceMetrics = [
-    { value: '500+', label: 'Wells Monitored' },
-    { value: '45%', label: 'Efficiency Gain' },
-    { value: '24/7', label: 'Operations' },
-    { value: '15+', label: 'Global Markets' }
+    { value: '500+', label: t.wellsMonitored },
+    { value: '45%', label: t.efficiencyGain },
+    { value: '24/7', label: t.operations247 },
+    { value: '15+', label: t.globalMarkets }
   ];
 
   // Enhanced theme management with proper detection
@@ -248,26 +248,127 @@ export function AboutSection() {
     if (typeof window !== 'undefined' && (window as any).THREE) {
       initGlobe();
     } else {
-      // Dynamically load Three.js
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-      script.onload = () => initGlobe();
-      script.onerror = () => {
-        // Fallback to canvas 2D
-        const canvas = document.getElementById('globe-canvas') as HTMLCanvasElement;
-        if (canvas) {
-          const ctx = canvas.getContext('2d');
-          if (ctx) {
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = () => {
-              ctx.drawImage(img, 0, 0, 400, 400);
-            };
-            img.src = 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=400&h=400&fit=crop&crop=center';
-          }
+      // Securely load Three.js with integrity verification and fallback
+      const loadThreeJS = () => {
+        const script = document.createElement('script');
+        
+        // Primary CDN - cdnjs.cloudflare.com with SRI
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+        script.integrity = 'sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==';
+        script.crossOrigin = 'anonymous';
+        script.async = true;
+        script.defer = true;
+        
+        // Add CSP nonce if available (for enhanced security)
+        const cspNonce = document.querySelector('meta[name="csp-nonce"]')?.getAttribute('content');
+        if (cspNonce) {
+          script.nonce = cspNonce;
         }
+        
+        script.onload = () => {
+          // Verify Three.js loaded correctly
+          if (typeof (window as any).THREE !== 'undefined') {
+            initGlobe();
+          } else {
+            console.warn('Three.js loaded but not available on window object');
+            fallbackToCanvas();
+          }
+        };
+        
+        script.onerror = (error) => {
+          console.warn('Failed to load Three.js from primary CDN, attempting fallback:', error);
+          tryFallbackCDN();
+        };
+        
+        // Security: Set referrer policy
+        script.referrerPolicy = 'no-referrer';
+        
+        document.head.appendChild(script);
       };
-      document.head.appendChild(script);
+      
+      // Fallback CDN loader
+      const tryFallbackCDN = () => {
+        const fallbackScript = document.createElement('script');
+        fallbackScript.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js';
+        fallbackScript.crossOrigin = 'anonymous';
+        fallbackScript.async = true;
+        fallbackScript.defer = true;
+        fallbackScript.referrerPolicy = 'no-referrer';
+        
+        fallbackScript.onload = () => {
+          if (typeof (window as any).THREE !== 'undefined') {
+            console.info('Three.js loaded from fallback CDN');
+            initGlobe();
+          } else {
+            console.warn('Three.js fallback CDN failed, using canvas fallback');
+            fallbackToCanvas();
+          }
+        };
+        
+        fallbackScript.onerror = () => {
+          console.warn('All Three.js CDN sources failed, using canvas fallback');
+          fallbackToCanvas();
+        };
+        
+        document.head.appendChild(fallbackScript);
+      };
+      
+      // Canvas 2D fallback with enhanced security
+      const fallbackToCanvas = () => {
+        const canvas = document.getElementById('globe-canvas') as HTMLCanvasElement;
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        
+        // Create a more secure image loading process
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.referrerPolicy = 'no-referrer';
+        
+        img.onload = () => {
+          try {
+            // Validate image dimensions for security
+            if (img.width > 0 && img.height > 0 && img.width <= 2000 && img.height <= 2000) {
+              ctx.drawImage(img, 0, 0, 400, 400);
+              
+              // Add a subtle overlay to indicate fallback mode
+              ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+              ctx.fillRect(0, 0, 400, 400);
+              ctx.fillStyle = 'white';
+              ctx.font = '16px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('Static View', 200, 200);
+            }
+          } catch (error) {
+            console.warn('Canvas drawing failed:', error);
+            // Final fallback - just draw a placeholder
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, 400, 400);
+            ctx.fillStyle = '#4a9eff';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🌍', 200, 200);
+          }
+        };
+        
+        img.onerror = () => {
+          console.warn('Image loading failed, drawing placeholder');
+          // Final fallback - simple graphic
+          ctx.fillStyle = '#1a1a1a';
+          ctx.fillRect(0, 0, 400, 400);
+          ctx.fillStyle = '#4a9eff';
+          ctx.font = '64px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('🌍', 200, 200);
+        };
+        
+        // Use a more secure image source with size constraints
+        img.src = 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=400&h=400&fit=crop&crop=center&auto=format&q=75';
+      };
+      
+      // Start the loading process
+      loadThreeJS();
     }
 
     // Subtle mouse interaction for tech badges only
@@ -318,36 +419,29 @@ export function AboutSection() {
         {/* Executive Header */}
         <header className="about-header">
           <p className="about-subtitle">
-            SMARTER OPERATIONS WITH GEOSPATIAL INSIGHT
+            {t.aboutSubtitle}
           </p>
           <h1 className="about-title">
-            Sirius: PETRONAS' New <span className="highlight">GIS-Powered Platform</span>
+            {t.aboutTitle.split('GIS-Powered Platform')[0]}
+            <span className="highlight">GIS-Powered Platform</span>
           </h1>
           <p className="about-description">
-            <strong>Sirius</strong> represents PETRONAS' commitment to digital transformation, 
-            providing comprehensive geospatial intelligence that empowers decision-makers across 
-            our global operations with unprecedented visibility into geological, geophysical, 
-            and asset management data.
+            {t.aboutDescription}
           </p>
           <p className="about-description">
-            Built on enterprise-grade architecture, Sirius integrates industry-leading 
-            technologies to deliver mission-critical insights that drive operational excellence 
-            and strategic growth across our upstream portfolio.
+            {t.aboutDescription2}
           </p>
 
           {/* Executive Insight */}
           <div className="executive-insight">
             <p className="insight-content">
-              "Sirius has fundamentally transformed our approach to field development and 
-              asset optimization. The platform's integrated geospatial capabilities have 
-              enabled our teams to reduce decision-making cycles by 60% while improving 
-              operational accuracy across all our major projects."
+              "{t.executiveInsight}"
             </p>
             <div className="insight-attribution">
               <div className="attribution-avatar">DM</div>
               <div className="attribution-details">
-                <h4>Dato' Mohammad Zainal</h4>
-                <p>Executive Vice President, Upstream</p>
+                <h4>{t.executiveName}</h4>
+                <p>{t.executiveTitle}</p>
               </div>
             </div>
           </div>
@@ -395,11 +489,10 @@ export function AboutSection() {
           {/* Enterprise Features */}
           <div className="about-features">
             <h2 className="features-title">
-              Enterprise Technology Stack
+              {t.technologyStackTitle}
             </h2>
             <p className="about-description">
-              Sirius leverages best-in-class enterprise platforms to deliver 
-              unparalleled geospatial intelligence and operational insights.
+              {t.techStack}
             </p>
             
             <ul className="tech-stack-list" role="list">
@@ -418,7 +511,7 @@ export function AboutSection() {
             
             {/* Performance Metrics Dashboard */}
             <div className="performance-metrics">
-              <h3 className="metrics-title">Operational Excellence Metrics</h3>
+              <h3 className="metrics-title">{t.operationalMetricsTitle}</h3>
               <div className="metrics-grid">
                 {performanceMetrics.map((metric, index) => (
                   <div key={index} className="metric-card">

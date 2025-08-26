@@ -5,10 +5,21 @@ import './ContactSection.css';
 
 export function ContactSection() {
   const { t } = useLanguage();
-  const { formData, isSubmitting, handleInputChange, handleSubmit } = useForm();
+  const { 
+    formData, 
+    isSubmitting, 
+    handleInputChange, 
+    handleBlur,
+    handleSubmit, 
+    getFieldError 
+  } = useForm();
 
   const onSubmitSuccess = () => {
     alert(t.formSuccess);
+  };
+
+  const onSubmitError = (error: string) => {
+    alert(`Error: ${error}`);
   };
 
   return (
@@ -23,7 +34,7 @@ export function ContactSection() {
             <h3 className="heading-3">{t.formTitle}</h3>
             <p className="body-medium">{t.formSubtitle}</p>
             
-            <form className="contact-form" onSubmit={(e) => handleSubmit(e, onSubmitSuccess)}>
+            <form className="contact-form" onSubmit={(e) => handleSubmit(e, onSubmitSuccess, onSubmitError)}>
               <div className="form-group">
                 <label htmlFor="name">{t.nameLabel}</label>
                 <input
@@ -32,9 +43,14 @@ export function ContactSection() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   placeholder={t.namePlaceholder}
+                  className={getFieldError('name') ? 'error' : ''}
                   required
                 />
+                {getFieldError('name') && (
+                  <span className="error-message">{getFieldError('name')}</span>
+                )}
               </div>
               
               <div className="form-group">
@@ -45,9 +61,14 @@ export function ContactSection() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   placeholder={t.emailPlaceholder}
+                  className={getFieldError('email') ? 'error' : ''}
                   required
                 />
+                {getFieldError('email') && (
+                  <span className="error-message">{getFieldError('email')}</span>
+                )}
               </div>
               
               <div className="form-group">
@@ -58,9 +79,14 @@ export function ContactSection() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   placeholder={t.phonePlaceholder}
+                  className={getFieldError('phone') ? 'error' : ''}
                   required
                 />
+                {getFieldError('phone') && (
+                  <span className="error-message">{getFieldError('phone')}</span>
+                )}
               </div>
               
               <div className="form-group">
@@ -70,6 +96,8 @@ export function ContactSection() {
                   name="subject"
                   value={formData.subject}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={getFieldError('subject') ? 'error' : ''}
                   required
                 >
                   <option value="">{t.subjectPlaceholder}</option>
@@ -80,6 +108,9 @@ export function ContactSection() {
                   <option value="demo">{t.requestDemo}</option>
                   <option value="other">{t.other}</option>
                 </select>
+                {getFieldError('subject') && (
+                  <span className="error-message">{getFieldError('subject')}</span>
+                )}
               </div>
               
               <div className="form-group">
@@ -89,10 +120,15 @@ export function ContactSection() {
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   placeholder={t.messagePlaceholder}
                   rows={5}
+                  className={getFieldError('message') ? 'error' : ''}
                   required
                 />
+                {getFieldError('message') && (
+                  <span className="error-message">{getFieldError('message')}</span>
+                )}
               </div>
               
               <Button type="submit" disabled={isSubmitting}>
