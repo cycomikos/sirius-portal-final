@@ -1,5 +1,6 @@
 import { useEffect, useRef, useMemo, useCallback, memo } from 'react';
-import { useLanguage } from '../../context/LanguageContext';
+import { useTranslation } from 'react-i18next';
+import { useI18nSync } from '../../hooks/useI18nSync';
 import { Section } from '../UI';
 import { createSecureScript, isAllowedDomain } from '../../utils/security';
 import './AboutSection.css';
@@ -103,7 +104,10 @@ const loadThreeJS = (): Promise<void> => {
 };
 
 export const AboutSection = memo(function AboutSection() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
+  
+  // Sync react-i18next with existing language context
+  useI18nSync();
   const earthRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
@@ -113,11 +117,11 @@ export const AboutSection = memo(function AboutSection() {
 
   // Memoize performance metrics to prevent recreation
   const performanceMetrics = useMemo(() => [
-    { value: '2,500+', label: t.wellsMonitored },
-    { value: '$2.3B', label: t.efficiencyGain },
-    { value: '24/7', label: t.operations247 },
-    { value: '25+', label: t.globalMarkets }
-  ], [t.wellsMonitored, t.efficiencyGain, t.operations247, t.globalMarkets]);
+    { value: '2,500+', label: t('about.wellsMonitored') },
+    { value: '$2.3B', label: t('about.efficiencyGain') },
+    { value: '24/7', label: t('about.operations247') },
+    { value: '25+', label: t('about.globalMarkets') }
+  ], [t]);
 
 
   // Throttled mouse move handler
@@ -362,29 +366,31 @@ export const AboutSection = memo(function AboutSection() {
         {/* Executive Header */}
         <header className="about-header">
           <p className="about-subtitle">
-            {t.aboutSubtitle}
+            {t('about.subtitle')}
           </p>
-          <h1 className="about-title">
-            {t.aboutTitle.split('GIS-Powered Platform')[0]}
-            <span className="highlight">GIS-Powered Platform</span>
+          <h1 className="about-title" dangerouslySetInnerHTML={{
+            __html: t('about.title')
+              .replace('<highlight>', '<span class="highlight">')
+              .replace('</highlight>', '</span>')
+          }}>
           </h1>
           <p className="about-description">
-            {t.aboutDescription}
+            {t('about.description')}
           </p>
           <p className="about-description">
-            {t.aboutDescription2}
+            {t('about.description2')}
           </p>
 
           {/* Executive Insight */}
           <div className="executive-insight">
             <p className="insight-content">
-              "{t.executiveInsight}"
+              "{t('about.executiveInsight')}"
             </p>
             <div className="insight-attribution">
               <div className="attribution-avatar">DM</div>
               <div className="attribution-details">
-                <h4>{t.executiveName}</h4>
-                <p>{t.executiveTitle}</p>
+                <h4>{t('about.executiveName')}</h4>
+                <p>{t('about.executiveTitle')}</p>
               </div>
             </div>
           </div>
@@ -432,10 +438,10 @@ export const AboutSection = memo(function AboutSection() {
           {/* Enhanced Enterprise Features */}
           <div className="about-features enhanced">
             <h2 className="features-title">
-              {t.technologyStackTitle}
+              {t('about.technologyStackTitle')}
             </h2>
             <p className="about-description">
-              {t.techStack}
+              {t('about.techStack')}
             </p>
             
             <div className="tech-stack-grid" role="list">
@@ -465,7 +471,7 @@ export const AboutSection = memo(function AboutSection() {
         
         {/* Full-Width Performance Metrics Dashboard */}
         <div className="performance-metrics full-width">
-          <h3 className="metrics-title">{t.operationalMetricsTitle}</h3>
+          <h3 className="metrics-title">{t('about.operationalMetricsTitle')}</h3>
           <div className="metrics-grid">
             {performanceMetrics.map((metric, metricIndex) => (
               <div key={`${metric.value}-${metricIndex}`} className="metric-card">

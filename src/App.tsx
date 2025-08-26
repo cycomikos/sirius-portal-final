@@ -10,6 +10,8 @@ import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 import { useAppState, useScrollEffects } from './hooks';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { I18nextProvider } from 'react-i18next';
+import { i18n } from './i18n';
 import './styles/global.css';
 import './components/ErrorBoundary/ErrorBoundary.css';
 import './components/Footer/Footer.css';
@@ -67,11 +69,13 @@ function AppContent() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <LanguageProvider>
-          <AppContent />
-        </LanguageProvider>
-      </ThemeProvider>
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider>
+          <LanguageProvider>
+            <AppContent />
+          </LanguageProvider>
+        </ThemeProvider>
+      </I18nextProvider>
     </ErrorBoundary>
   );
 }
